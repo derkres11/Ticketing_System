@@ -10,8 +10,17 @@ from app.crud.crud_user import (
     create_user, get_users, get_user, delete_user
 )
 
+import logging
+
+
 app = FastAPI(title="University Ticketing System")
 router = APIRouter()
+
+# Graceful shutdown handlers
+@app.on_event("shutdown")
+async def shutdown_event():
+    logging.info("Shutting down gracefully. Closing resources if needed.")
+
 
 # Ticket Endpoints--------------------------------------------------------
 
@@ -36,8 +45,6 @@ def delete(ticket_id: int, db: Session = Depends(get_db)):
     delete_ticket(db, ticket_id)
     return {"detail": "Ticket deleted"}
 
-app.include_router(router)
-
 
 # User Endpoints--------------------------------------------------------
 
@@ -57,3 +64,5 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 def delete_user_route(user_id: int, db: Session = Depends(get_db)):
     delete_user(db, user_id)
     return {"detail": "User deleted"}
+
+app.include_router(router)
