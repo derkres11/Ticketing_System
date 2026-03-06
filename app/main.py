@@ -1,11 +1,11 @@
 from fastapi import FastAPI, APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.schemas.ticket import TicketCreate, TicketResponse
+from app.ValidationModels.ticket import TicketCreate, TicketResponse
 from app.db.session import get_db
 from app.crud.crud_ticket import (
     create_ticket, get_tickets, get_ticket, update_ticket, delete_ticket
 )
-from app.schemas.user import UserCreate, UserResponse
+from app.ValidationModels.user import UserCreate, UserResponse
 from app.crud.crud_user import (
     create_user, get_users, get_user, delete_user
 )

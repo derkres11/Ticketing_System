@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.ticket import Ticket
-from app.schemas.ticket import TicketCreate
+from app.DB_models.ticket import Ticket
+from app.ValidationModels.ticket import TicketCreate
 
 def create_ticket(db: Session, ticket: TicketCreate):
     db_ticket = Ticket(**ticket.dict())
