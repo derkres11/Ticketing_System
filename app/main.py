@@ -10,11 +10,26 @@ from app.crud.crud_user import (
     create_user, get_users, get_user, delete_user
 )
 
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import HTTPException, status
+import secrets
+from app.DB_models.user import User 
 import logging
 
 
 app = FastAPI(title="University Ticketing System")
 router = APIRouter()
+security = HTTPBasic()
+
+def authenticate_user(credentials: HTTPBasicCredentials = Depends(security), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == credentials.username).first()
+    if user is None or not secrets.compare_digest(str(user.hashed_password), str(credentials.password)):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return user
 
 # Graceful shutdown handlers
 @app.on_event("shutdown")
@@ -66,3 +81,11 @@ def delete_user_route(user_id: int, db: Session = Depends(get_db)):
     return {"detail": "User deleted"}
 
 app.include_router(router)
+
+
+# Authentication Endpoint (Example)
+
+
+@router.get("/protected")
+def protected_route(current_user: User = Depends(authenticate_user)):
+    return {"message": f"Hello, {current_user.username}!"}
