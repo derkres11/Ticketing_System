@@ -5,12 +5,18 @@ from app.db.session import get_db
 from app.crud.crud_ticket import (
     create_ticket, get_tickets, get_ticket, update_ticket, delete_ticket
 )
+from app.schemas.user import UserCreate, UserResponse
+from app.crud.crud_user import (
+    create_user, get_users, get_user, delete_user
+)
 
 app = FastAPI(title="University Ticketing System")
 router = APIRouter()
 
+# Ticket Endpoints--------------------------------------------------------
+
 @router.post("/tickets", response_model=TicketResponse)
-def create(ticket: TicketCreate, db: Session = Depends(get_db)):
+def create_ticket_route(ticket: TicketCreate, db: Session = Depends(get_db)):
     return create_ticket(db, ticket)
 
 @router.get("/tickets", response_model=list[TicketResponse])
@@ -31,3 +37,23 @@ def delete(ticket_id: int, db: Session = Depends(get_db)):
     return {"detail": "Ticket deleted"}
 
 app.include_router(router)
+
+
+# User Endpoints--------------------------------------------------------
+
+@router.post("/users", response_model=UserResponse)
+def create(user: UserCreate, db: Session = Depends(get_db)):
+    return create_user(db, user)
+
+@router.get("/users", response_model=list[UserResponse])
+def read_all_users(db: Session = Depends(get_db)):
+    return get_users(db)
+
+@router.get("/users/{user_id}", response_model=UserResponse)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    return get_user(db, user_id)
+
+@router.delete("/users/{user_id}")
+def delete_user_route(user_id: int, db: Session = Depends(get_db)):
+    delete_user(db, user_id)
+    return {"detail": "User deleted"}
