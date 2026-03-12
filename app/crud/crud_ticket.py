@@ -28,3 +28,7 @@ def delete_ticket(db: Session, ticket_id: int):
     db.delete(ticket)
     db.commit()
     return ticket
+
+
+def get_tickets_by_student(db: Session, student_id: int):
+    return db.query(Ticket).filter(Ticket.student_id == student_id).all()
