@@ -10,6 +10,7 @@ from app.crud.crud_user import (
     create_user, get_users, get_user, delete_user
 )
 
+from app.crud.crud_ticket_redis import redis_create, redis_read, redis_update, redis_delete
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import HTTPException, status
 import secrets
@@ -84,6 +85,24 @@ app.include_router(router)
 
 
 # Authentication Endpoint (Example)
+
+
+#Redis CRUD Example
+
+@router.post("/redis/set")
+def set_redis(key: str, value: str):
+    redis_create(key, value)
+    return {"detail": "Value set"}
+
+@router.get("/redis/get")
+def get_redis(key: str):
+    value = redis_read(key)
+    return {"value": value}
+
+@router.delete("/redis/delete")
+def delete_redis(key: str):
+    redis_delete(key)
+    return {"detail": "Value deleted"}
 
 
 @router.get("/protected")
