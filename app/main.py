@@ -83,11 +83,7 @@ def delete_user_route(user_id: int, db: Session = Depends(get_db)):
 
 app.include_router(router)
 
-
-# Authentication Endpoint (Example)
-
-
-#Redis CRUD Example
+# Redis CRUD Example
 
 @router.post("/redis/set")
 def set_redis(key: str, value: str):
@@ -105,6 +101,9 @@ def delete_redis(key: str):
     return {"detail": "Value deleted"}
 
 
+
+
+# Authentication Endpoint (Example)
 @router.get("/protected")
 def protected_route(current_user: User = Depends(authenticate_user)):
     return {"message": f"Hello, {current_user.username}!"}
