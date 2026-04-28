@@ -16,6 +16,8 @@ from fastapi import HTTPException, status
 import secrets
 from app.DB_models.user import User 
 import logging
+from app.utils.security import verify_password
+
 
 
 app = FastAPI(title="University Ticketing System")
@@ -24,7 +26,7 @@ security = HTTPBasic()
 
 def authenticate_user(credentials: HTTPBasicCredentials = Depends(security), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == credentials.username).first()
-    if user is None or not secrets.compare_digest(str(user.hashed_password), str(credentials.password)):
+    if user is None or not verify_password(credentials.password, getattr(user, "hashed_password", "")):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",

@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
 from app.DB_models.user import User
 from app.ValidationModels.user import UserCreate
+from app.utils.security import get_password_hash  # updated import
 
 def create_user(db: Session, user: UserCreate):
     db_user = User(
         username=user.username,
         email=user.email,
-        hashed_password=user.password, 
+        hashed_password=get_password_hash(user.password),  # updated usage
         role="student"
     )
     db.add(db_user)
