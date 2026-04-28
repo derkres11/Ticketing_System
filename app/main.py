@@ -17,6 +17,8 @@ import secrets
 from app.DB_models.user import User 
 import logging
 from app.utils.security import verify_password
+import asyncio
+from app.events.kafka_client import kafka_client  
 
 
 
@@ -109,3 +111,21 @@ def delete_redis(key: str):
 @router.get("/protected")
 def protected_route(current_user: User = Depends(authenticate_user)):
     return {"message": f"Hello, {current_user.username}!"}
+
+
+
+# Kafka Producer
+@app.on_event("startup")
+async def app_startup():
+    try:
+        await kafka_client.start_producer()
+    except Exception:
+        logging.exception("Kafka producer start failed")
+
+
+@app.on_event("shutdown")
+async def app_shutdown():
+    try:
+        await kafka_client.stop_producer()
+    except Exception:
+        logging.exception("Kafka producer stop failed")
