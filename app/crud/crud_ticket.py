@@ -3,12 +3,16 @@ from app.DB_models.ticket import Ticket
 from app.ValidationModels.ticket import TicketCreate
 import asyncio
 from app.events.kafka_client import publish_ticket_event
+from app.metrics.metrics import TICKETS_CREATED
+
 
 def create_ticket(db: Session, ticket: TicketCreate):
     db_ticket = Ticket(**ticket.dict())
     db.add(db_ticket)
     db.commit()
     db.refresh(db_ticket)
+
+    TICKETS_CREATED.inc()
 
     event_data = {
         "id": db_ticket.id,

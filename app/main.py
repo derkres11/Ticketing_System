@@ -19,7 +19,7 @@ import logging
 from app.utils.security import verify_password
 import asyncio
 from app.events import kafka_client  
-from app import metrics
+from app.metrics import metrics
 
 
 
