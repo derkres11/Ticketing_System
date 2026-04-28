@@ -6,23 +6,25 @@ from typing import Optional
 
 try:
     from aiokafka import AIOKafkaProducer
-except ImportError as e:
-    raise ImportError("aiokafka is not installed. Please run 'pip install aiokafka'") from e
+except ImportError:
+    # aiokafka is optional; provide a fallback stub
+    AIOKafkaProducer = None
 
 load_dotenv()
 
 BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 TICKETS_TOPIC = os.getenv("KAFKA_TICKETS_TOPIC", "tickets.events")
 
-_producer: Optional[AIOKafkaProducer] = None
+_producer = None  
 
 async def start_producer(loop: Optional[asyncio.AbstractEventLoop] = None):
     global _producer
+    if AIOKafkaProducer is None:
+        return
     if _producer is None:
         loop = loop or asyncio.get_event_loop()
         _producer = AIOKafkaProducer(bootstrap_servers=BOOTSTRAP, loop=loop)
-        if _producer is not None:
-            await _producer.start()
+        await _producer.start()
 
 async def stop_producer():
     global _producer
@@ -32,6 +34,8 @@ async def stop_producer():
 
 async def publish_ticket_event(key: str, data: dict):
     global _producer
+    if AIOKafkaProducer is None:
+        return
     if _producer is None:
         await start_producer()
     if _producer is None:

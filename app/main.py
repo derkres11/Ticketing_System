@@ -18,11 +18,13 @@ from app.DB_models.user import User
 import logging
 from app.utils.security import verify_password
 import asyncio
-from app.events.kafka_client import kafka_client  
+from app.events import kafka_client  
+from app import metrics
 
 
 
 app = FastAPI(title="University Ticketing System")
+app.add_middleware(metrics.MetricsMiddleware)  # register middleware
 router = APIRouter()
 security = HTTPBasic()
 
@@ -35,12 +37,6 @@ def authenticate_user(credentials: HTTPBasicCredentials = Depends(security), db:
             headers={"WWW-Authenticate": "Basic"},
         )
     return user
-
-# Graceful shutdown handlers
-@app.on_event("shutdown")
-async def shutdown_event():
-    logging.info("Shutting down gracefully. Closing resources if needed.")
-
 
 # Ticket Endpoints--------------------------------------------------------
 
@@ -129,3 +125,10 @@ async def app_shutdown():
         await kafka_client.stop_producer()
     except Exception:
         logging.exception("Kafka producer stop failed")
+
+
+
+# Metrics--------------------------------------------------------
+@app.get("/metrics")
+def metrics_endpoint():
+    return metrics.metrics_response()

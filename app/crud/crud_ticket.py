@@ -2,11 +2,7 @@ from sqlalchemy.orm import Session
 from app.DB_models.ticket import Ticket
 from app.ValidationModels.ticket import TicketCreate
 import asyncio
-
-# Temporary dummy function to avoid import error
-async def publish_ticket_event(event_type, event_data):
-    # TODO: Replace with actual implementation from app.events.kafka_client
-    pass
+from app.events.kafka_client import publish_ticket_event
 
 def create_ticket(db: Session, ticket: TicketCreate):
     db_ticket = Ticket(**ticket.dict())

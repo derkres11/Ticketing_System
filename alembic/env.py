@@ -1,16 +1,12 @@
 import sys
 import os
-# Ensure the project root is in sys.path so 'app' can be imported
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
+from sqlalchemy import engine_from_config, pool
 from alembic import context
 from dotenv import load_dotenv
 
+# Ensure project root is importable
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 load_dotenv()
 
 config = context.config
@@ -24,13 +20,13 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import the project's single Base and all models so metadata is populated
-from app.DB_models.base import Base  # single shared Base
-# import models so they register with Base.metadata
+from app.DB_models.base import Base  # shared Base
 import app.DB_models.user  # noqa: F401
 import app.DB_models.ticket  # noqa: F401
 # add other model imports here as needed
 
 target_metadata = Base.metadata
+
 
 def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
@@ -43,9 +39,10 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
+
 def run_migrations_online() -> None:
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section) or {},  # Ensure a dict is always passed
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
@@ -53,6 +50,7 @@ def run_migrations_online() -> None:
         context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
