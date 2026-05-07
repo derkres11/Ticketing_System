@@ -3,28 +3,56 @@ from ai.category_suggester import suggest_category
 from ai.duplicate_detector import DuplicateDetector
 
 
-faq = FAQEngine()
-duplicate_detector = DuplicateDetector()
+faq = FAQEngine("data/faq.json")
+
+detector = DuplicateDetector("data/tickets.json")
+
+
+print("=== AI Ticketing Assistant ===")
 
 while True:
-    question = input("Ask a question: ")
 
-    if question.lower() == "exit":
+    user_question = input("\nAsk your question: ")
+
+    if user_question.lower() == "exit":
+        print("Goodbye!")
         break
 
-    answer = faq.get_answer(question)
-    category = suggest_category(question)
+    answer = faq.get_answer(user_question)
 
-    # Check duplicate
-    is_duplicate, matched_ticket = duplicate_detector.check_duplicate(question)
+    print("\n=== FAQ RESULT ===")
 
-    print("Bot:", answer)
-    print("Category:", category)
+    # FAQ FOUND
+    if answer != "Please create a support ticket.":
 
-    if is_duplicate:
-        print("Duplicate Ticket Detected!")
-        print("Similar to:", matched_ticket)
+        print(answer)
+        print("\n Question answered using FAQ system.")
+
+    # FAQ NOT FOUND
     else:
-        print("This is a new ticket.")
 
-    print("------")
+        print(answer)
+
+        category = suggest_category(user_question)
+
+        print("\n=== CATEGORY ===")
+        print(category)
+
+        score, matched_ticket = detector.check_duplicate(user_question)
+
+        print("\n=== DUPLICATE CHECK ===")
+
+        if score > 0.5:
+
+            print("⚠ Similar issue detected")
+            print(f"Matched ticket: {matched_ticket}")
+            print(f"Similarity score: {score:.2f}")
+            print("Please wait while support resolves this issue.")
+
+        else:
+
+            print("No duplicate issue found")
+
+            detector.add_ticket(user_question)
+
+            print("New support ticket created successfully.")

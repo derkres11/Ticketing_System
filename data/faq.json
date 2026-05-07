@@ -78,5 +78,87 @@
   {
     "question": "Where can I find the academic calendar?",
     "answer": "The academic calendar is available on the university website under the academic section."
-  }
+  },
+  {
+  "question": "How can I apply for a scholarship?",
+  "answer": "Scholarship applications are available through the student portal."
+},
+{
+  "question": "When does course registration start?",
+  "answer": "Course registration dates are announced in the academic calendar."
+},
+{
+  "question": "How can I change my major?",
+  "answer": "You must submit a major change request to the academic office."
+},
+{
+  "question": "Where can I pay tuition fees?",
+  "answer": "Tuition fees can be paid online through the finance portal."
+},
+{
+  "question": "Why is my payment not updated?",
+  "answer": "Payment updates may take up to 24 hours to appear in the system."
+},
+{
+  "question": "How do I access online classes?",
+  "answer": "Use your student credentials to log into the learning management system."
+},
+{
+  "question": "What should I do if my account is locked?",
+  "answer": "Please contact IT support to unlock your account."
+},
+{
+  "question": "Can I retake a failed course?",
+  "answer": "Yes, failed courses can usually be retaken during the next available semester."
+},
+{
+  "question": "How do I print my enrollment certificate?",
+  "answer": "Enrollment certificates are available in the student portal."
+},
+{
+  "question": "Where can I see classroom locations?",
+  "answer": "Classroom information is available in your timetable."
+},
+{
+  "question": "How can I update my personal information?",
+  "answer": "Personal information can be updated in your student profile settings."
+},
+{
+  "question": "What should I do if I miss an exam?",
+  "answer": "Contact your instructor or administration office immediately."
+},
+{
+  "question": "How can I request academic leave?",
+  "answer": "Academic leave requests must be submitted to administration."
+},
+{
+  "question": "How do I check my attendance?",
+  "answer": "Attendance records are available in the student portal."
+},
+{
+  "question": "Can I study online?",
+  "answer": "Some courses support online learning through the university platform."
+},
+{
+  "question": "How do I contact technical support?",
+  "answer": "Technical support can be reached through the IT helpdesk."
+},
+{
+  "question": "Why is the portal slow?",
+  "answer": "The portal may be temporarily overloaded during peak hours."
+},
+{
+  "question": "How can I download lecture materials?",
+  "answer": "Lecture materials are available in the course section."
+},
+{
+  "question": "Can I change my class section?",
+  "answer": "Class section changes depend on seat availability."
+},
+{
+  "question": "Where can I see announcements?",
+  "answer": "University announcements are posted on the student portal homepage."
+}
+
+
 ]

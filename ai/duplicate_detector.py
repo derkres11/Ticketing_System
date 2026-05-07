@@ -5,25 +5,37 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class DuplicateDetector:
 
-    def __init__(self, file_path="data/tickets.json"):
+    def __init__(self, tickets_path):
 
-        with open(file_path, "r") as f:
-            self.tickets = json.load(f)
+        self.tickets_path = tickets_path
 
-        self.vectorizer = TfidfVectorizer(stop_words="english")
+        with open(tickets_path, "r") as file:
+            self.tickets = json.load(file)
+
+        self.vectorizer = TfidfVectorizer()
+
         self.ticket_vectors = self.vectorizer.fit_transform(self.tickets)
 
     def check_duplicate(self, new_ticket):
 
         new_vector = self.vectorizer.transform([new_ticket])
+
         similarity = cosine_similarity(new_vector, self.ticket_vectors)
 
-        index = similarity.argmax()
-        confidence = similarity[0][index]
+        best_match_index = similarity.argmax()
 
-        print("Duplicate Confidence:", confidence)
+        best_score = similarity[0][best_match_index]
 
-        if confidence > 0.5:
-            return True, self.tickets[index]
-        else:
-            return False, None
+        matched_ticket = self.tickets[best_match_index]
+
+        return best_score, matched_ticket
+
+    def add_ticket(self, new_ticket):
+
+        self.tickets.append(new_ticket)
+
+        with open(self.tickets_path, "w") as file:
+            json.dump(self.tickets, file, indent=4)
+
+        # retrain vectors
+        self.ticket_vectors = self.vectorizer.fit_transform(self.tickets)

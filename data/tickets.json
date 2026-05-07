@@ -1,6 +1,20 @@
 [
-  "I cannot login to portal",
-  "Exam schedule is not visible",
-  "Timetable is not showing",
-  "I missed my class due to absence"
+    "I cannot login to the student portal",
+    "Portal crashes after login",
+    "Exam schedule is not visible",
+    "My timetable disappeared",
+    "Tuition payment is not updated",
+    "I forgot my password",
+    "Course registration failed",
+    "Online classes are not opening",
+    "Grades are missing from portal",
+    "Scholarship application failed",
+    "Attendance record is incorrect",
+    "Cannot access lecture materials",
+    "System shows payment error",
+    "Student portal is too slow",
+    "Cannot download timetable",
+    "Summer training",
+    "I want to transfer",
+    "Culture days"
 ]
