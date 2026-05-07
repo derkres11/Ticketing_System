@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIU Student Support — University Ticketing System</title>
+
+  <!-- ============================================================
+       UNISUPPORT — Web-Based University Ticketing Support System
+       Capstone Project Frontend Prototype
+       
+       FEATURES:
+         • Role-based login & registration (Student / Teacher / Admin)
+         • Dark mode / Light mode toggle
+         • English / Turkish language toggle
+         • Page intro banners explaining each screen
+         • Student portal: inquiries, chatbot widget, new inquiry form
+         • Teacher portal: inquiry inbox, triage view (3-action decision),
+           ticket thread, office hours manager
+         • Meeting request system: office vs online, office hour slots,
+           teacher accept/reject, student feedback notification
+         • Teacher selection with avatar photos in inquiry/meeting forms
+         • Admin analytics dashboard
+         
+       FILE STRUCTURE:
+         1. CSS Variables & Reset
+         2. Layout & Common Components
+         3. Screen-specific Styles
+         4. HTML Structure (rendered by JavaScript)
+         5. Translation Strings (EN / TR)
+         6. Application Data (teachers, tickets, office hours)
+         7. Router & Screen Renderer
+         8. Feature Logic (meeting requests, chatbot, etc.)
+  ============================================================ -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="light">
+
+  <!-- ────────────────────────────────────────────────────────────
+       SCREEN CONTAINER — JavaScript replaces this with the
+       appropriate screen based on the current route
+  ──────────────────────────────────────────────────────────────── -->
+  <div id="app">
+    <p style="padding:40px;text-align:center;color:#999">Loading UniSupport…</p>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
