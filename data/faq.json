@@ -1,0 +1,164 @@
+[
+  {
+    "question": "How many absences are allowed?",
+    "answer": "Students are allowed a maximum of 3 absences per course. Exceeding this limit may result in penalties."
+  },
+  {
+    "question": "What happens if I exceed the absence limit?",
+    "answer": "If you exceed the allowed absences, you may be restricted from taking the final exam or receive a grade penalty."
+  },
+  {
+    "question": "When is the final exam scheduled?",
+    "answer": "The final exam schedule is published on the student portal at the end of the semester."
+  },
+  {
+    "question": "How can I check my exam schedule?",
+    "answer": "You can check your exam schedule through the student portal under the 'Exams' section."
+  },
+  {
+    "question": "How do I reset my password?",
+    "answer": "Click on the 'Forgot Password' option on the login page and follow the instructions to reset your password."
+  },
+  {
+    "question": "I forgot my password, what should I do?",
+    "answer": "Use the password recovery option on the student portal to create a new password."
+  },
+  {
+    "question": "How can I view my timetable?",
+    "answer": "Your timetable is available in the student portal under the 'Schedule' section."
+  },
+  {
+    "question": "Why is my timetable not showing?",
+    "answer": "If your timetable is not visible, try refreshing the page or contact the administration office for assistance."
+  },
+  {
+    "question": "How do I contact my instructor?",
+    "answer": "You can contact your instructor via their official university email provided on the course page."
+  },
+  {
+    "question": "Where can I find instructor contact information?",
+    "answer": "Instructor contact details are available in the course section of the student portal."
+  },
+  {
+    "question": "How can I check my grades?",
+    "answer": "Grades can be viewed in the student portal under the 'Grades' or 'Results' section."
+  },
+  {
+    "question": "When are grades released?",
+    "answer": "Grades are usually released within two weeks after the final exam."
+  },
+  {
+    "question": "How do I register for courses?",
+    "answer": "Course registration can be completed through the student portal during the registration period."
+  },
+  {
+    "question": "I cannot register for a course, what should I do?",
+    "answer": "Ensure you meet the prerequisites. If the issue persists, contact academic advising."
+  },
+  {
+    "question": "How do I drop a course?",
+    "answer": "You can drop a course through the student portal before the deadline specified in the academic calendar."
+  },
+  {
+    "question": "What is the deadline to drop a course?",
+    "answer": "The course drop deadline is listed in the academic calendar on the university website."
+  },
+  {
+    "question": "How can I access online classes?",
+    "answer": "Online classes can be accessed via the learning management system using your student credentials."
+  },
+  {
+    "question": "Why can't I log into the student portal?",
+    "answer": "Check your username and password. If the issue continues, reset your password or contact IT support."
+  },
+  {
+    "question": "Who should I contact for technical issues?",
+    "answer": "You should contact the IT support team for any technical issues related to the system."
+  },
+  {
+    "question": "Where can I find the academic calendar?",
+    "answer": "The academic calendar is available on the university website under the academic section."
+  },
+  {
+  "question": "How can I apply for a scholarship?",
+  "answer": "Scholarship applications are available through the student portal."
+},
+{
+  "question": "When does course registration start?",
+  "answer": "Course registration dates are announced in the academic calendar."
+},
+{
+  "question": "How can I change my major?",
+  "answer": "You must submit a major change request to the academic office."
+},
+{
+  "question": "Where can I pay tuition fees?",
+  "answer": "Tuition fees can be paid online through the finance portal."
+},
+{
+  "question": "Why is my payment not updated?",
+  "answer": "Payment updates may take up to 24 hours to appear in the system."
+},
+{
+  "question": "How do I access online classes?",
+  "answer": "Use your student credentials to log into the learning management system."
+},
+{
+  "question": "What should I do if my account is locked?",
+  "answer": "Please contact IT support to unlock your account."
+},
+{
+  "question": "Can I retake a failed course?",
+  "answer": "Yes, failed courses can usually be retaken during the next available semester."
+},
+{
+  "question": "How do I print my enrollment certificate?",
+  "answer": "Enrollment certificates are available in the student portal."
+},
+{
+  "question": "Where can I see classroom locations?",
+  "answer": "Classroom information is available in your timetable."
+},
+{
+  "question": "How can I update my personal information?",
+  "answer": "Personal information can be updated in your student profile settings."
+},
+{
+  "question": "What should I do if I miss an exam?",
+  "answer": "Contact your instructor or administration office immediately."
+},
+{
+  "question": "How can I request academic leave?",
+  "answer": "Academic leave requests must be submitted to administration."
+},
+{
+  "question": "How do I check my attendance?",
+  "answer": "Attendance records are available in the student portal."
+},
+{
+  "question": "Can I study online?",
+  "answer": "Some courses support online learning through the university platform."
+},
+{
+  "question": "How do I contact technical support?",
+  "answer": "Technical support can be reached through the IT helpdesk."
+},
+{
+  "question": "Why is the portal slow?",
+  "answer": "The portal may be temporarily overloaded during peak hours."
+},
+{
+  "question": "How can I download lecture materials?",
+  "answer": "Lecture materials are available in the course section."
+},
+{
+  "question": "Can I change my class section?",
+  "answer": "Class section changes depend on seat availability."
+},
+{
+  "question": "Where can I see announcements?",
+  "answer": "University announcements are posted on the student portal homepage."
+}
+
+
+]

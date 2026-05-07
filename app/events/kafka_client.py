@@ -1,0 +1,44 @@
+import os
+import json
+import asyncio
+from dotenv import load_dotenv
+from typing import Optional
+
+try:
+    from aiokafka import AIOKafkaProducer
+except ImportError:
+    # aiokafka is optional; provide a fallback stub
+    AIOKafkaProducer = None
+
+load_dotenv()
+
+BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+TICKETS_TOPIC = os.getenv("KAFKA_TICKETS_TOPIC", "tickets.events")
+
+_producer = None  
+
+async def start_producer(loop: Optional[asyncio.AbstractEventLoop] = None):
+    global _producer
+    if AIOKafkaProducer is None:
+        return
+    if _producer is None:
+        loop = loop or asyncio.get_event_loop()
+        _producer = AIOKafkaProducer(bootstrap_servers=BOOTSTRAP, loop=loop)
+        await _producer.start()
+
+async def stop_producer():
+    global _producer
+    if _producer is not None:
+        await _producer.stop()
+        _producer = None
+
+async def publish_ticket_event(key: str, data: dict):
+    global _producer
+    if AIOKafkaProducer is None:
+        return
+    if _producer is None:
+        await start_producer()
+    if _producer is None:
+        raise RuntimeError("Kafka producer is not initialized")
+    payload = json.dumps({"event": key, "data": data}).encode("utf-8")
+    await _producer.send_and_wait(TICKETS_TOPIC, payload)

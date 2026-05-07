@@ -1,0 +1,134 @@
+from fastapi import FastAPI, APIRouter, Depends
+from sqlalchemy.orm import Session
+from app.ValidationModels.ticket import TicketCreate, TicketResponse
+from app.db.session import get_db
+from app.crud.crud_ticket import (
+    create_ticket, get_tickets, get_ticket, update_ticket, delete_ticket
+)
+from app.ValidationModels.user import UserCreate, UserResponse
+from app.crud.crud_user import (
+    create_user, get_users, get_user, delete_user
+)
+
+from app.crud.crud_ticket_redis import redis_create, redis_read, redis_update, redis_delete
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import HTTPException, status
+import secrets
+from app.DB_models.user import User 
+import logging
+from app.utils.security import verify_password
+import asyncio
+from app.events import kafka_client  
+from app.metrics import metrics
+
+
+
+app = FastAPI(title="University Ticketing System")
+app.add_middleware(metrics.MetricsMiddleware)  # register middleware
+router = APIRouter()
+security = HTTPBasic()
+
+def authenticate_user(credentials: HTTPBasicCredentials = Depends(security), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == credentials.username).first()
+    if user is None or not verify_password(credentials.password, getattr(user, "hashed_password", "")):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return user
+
+# Ticket Endpoints--------------------------------------------------------
+
+@router.post("/tickets", response_model=TicketResponse)
+def create_ticket_route(ticket: TicketCreate, db: Session = Depends(get_db)):
+    return create_ticket(db, ticket)
+
+@router.get("/tickets", response_model=list[TicketResponse])
+def read_all(db: Session = Depends(get_db)):
+    return get_tickets(db)
+
+@router.get("/tickets/{ticket_id}", response_model=TicketResponse)
+def read(ticket_id: int, db: Session = Depends(get_db)):
+    return get_ticket(db, ticket_id)
+
+@router.put("/tickets/{ticket_id}", response_model=TicketResponse)
+def update(ticket_id: int, ticket_update: TicketCreate, db: Session = Depends(get_db)):
+    return update_ticket(db, ticket_id, ticket_update)
+
+@router.delete("/tickets/{ticket_id}")
+def delete(ticket_id: int, db: Session = Depends(get_db)):
+    delete_ticket(db, ticket_id)
+    return {"detail": "Ticket deleted"}
+
+
+# User Endpoints--------------------------------------------------------
+
+@router.post("/users", response_model=UserResponse)
+def create(user: UserCreate, db: Session = Depends(get_db)):
+    return create_user(db, user)
+
+@router.get("/users", response_model=list[UserResponse])
+def read_all_users(db: Session = Depends(get_db)):
+    return get_users(db)
+
+@router.get("/users/{user_id}", response_model=UserResponse)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    return get_user(db, user_id)
+
+@router.delete("/users/{user_id}")
+def delete_user_route(user_id: int, db: Session = Depends(get_db)):
+    delete_user(db, user_id)
+    return {"detail": "User deleted"}
+
+app.include_router(router)
+
+# Redis CRUD Example
+
+@router.post("/redis/set")
+def set_redis(key: str, value: str):
+    redis_create(key, value)
+    return {"detail": "Value set"}
+
+@router.get("/redis/get")
+def get_redis(key: str):
+    value = redis_read(key)
+    return {"value": value}
+
+@router.delete("/redis/delete")
+def delete_redis(key: str):
+    redis_delete(key)
+    return {"detail": "Value deleted"}
+
+
+
+
+# Authentication Endpoint (Example)
+@router.get("/protected")
+def protected_route(current_user: User = Depends(authenticate_user)):
+    return {"message": f"Hello, {current_user.username}!"}
+
+
+
+# Kafka Producer
+@app.on_event("startup")
+async def app_startup():
+    try:
+        await kafka_client.start_producer()
+    except Exception:
+        logging.exception("Kafka producer start failed")
+
+
+@app.on_event("shutdown")
+async def app_shutdown():
+    try:
+        await kafka_client.stop_producer()
+    except Exception:
+        logging.exception("Kafka producer stop failed")
+
+
+
+# Metrics--------------------------------------------------------
+@app.get("/metrics")
+def metrics_endpoint():
+    return metrics.metrics_response()
