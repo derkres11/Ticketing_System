@@ -20,18 +20,22 @@ while True:
 
     answer = faq.get_answer(user_question)
 
-    print("\n=== FAQ RESULT ===")
-
+    # =========================
     # FAQ FOUND
+    # =========================
     if answer != "Please create a support ticket.":
 
+        print("\n=== FAQ RESULT ===")
         print(answer)
+
         print("\n Question answered using FAQ system.")
 
+    # =========================
     # FAQ NOT FOUND
+    # =========================
     else:
 
-        print(answer)
+        print("\n No FAQ answer found.")
 
         category = suggest_category(user_question)
 
@@ -42,17 +46,34 @@ while True:
 
         print("\n=== DUPLICATE CHECK ===")
 
+        # =========================
+        # DUPLICATE FOUND
+        # =========================
         if score > 0.5:
 
             print("⚠ Similar issue detected")
-            print(f"Matched ticket: {matched_ticket}")
-            print(f"Similarity score: {score:.2f}")
-            print("Please wait while support resolves this issue.")
 
+            print(f"Ticket ID: {matched_ticket['id']}")
+            print(f"Issue: {matched_ticket['issue']}")
+            print(f"Status: {matched_ticket['status']}")
+
+            # RESOLVED TICKET
+            if matched_ticket["status"] == "Resolved":
+
+                print("\n=== EXISTING SOLUTION ===")
+                print(matched_ticket["admin_reply"])
+
+            # OPEN TICKET
+            else:
+
+                print("\n This issue is still being processed by support team.")
+
+        # =========================
+        # NEW TICKET
+        # =========================
         else:
 
-            print("No duplicate issue found")
+            detector.add_ticket(user_question, category)
 
-            detector.add_ticket(user_question)
-
-            print("New support ticket created successfully.")
+            print("\n New ticket created successfully.")
+            print("Please wait for admin/support response.")
